@@ -136,7 +136,6 @@ def test_officer_browse_pagination(mockdata, browser, server_port):
     assert expected in page_text
 
 # This test checks that going to the next page on the officers list page shows the same total officers
-# with default filters applied.
 def test_officer_browse_pagination_same_total_officers(mockdata, browser, server_port):
     total_officers = Officer.query.filter_by(department_id=AC_DEPT).count()
     officers_per_page = current_app.config[KEY_OFFICERS_PER_PAGE]
