@@ -135,6 +135,25 @@ def test_officer_browse_pagination(mockdata, browser, server_port):
     expected = f"Showing {start_of_page}-{total} of {total}"
     assert expected in page_text
 
+# This test checks that going to the next page on the officers list page shows the same total officers
+# with default filters applied.
+def test_officer_browse_pagination_same_total_officers(mockdata, browser, server_port):
+    total_officers = Officer.query.filter_by(department_id=AC_DEPT).count()
+    officers_per_page = current_app.config[KEY_OFFICERS_PER_PAGE]
+
+    # first page of results
+    browser.get(f"http://localhost:{server_port}/departments/{AC_DEPT}?page=1")
+    wait_for_element(browser, By.TAG_NAME, "body")
+    page_text = browser.find_element_by_tag_name("body").text
+    expected = f"Showing 1-{officers_per_page} of {total_officers}"
+    assert expected in page_text
+
+    # Clicking on next page, should have the same total.
+    browser.find_element_by_id("paginate-nav-next-page").click()
+    wait_for_element(browser, By.TAG_NAME, "body")
+    page_text = browser.find_element_by_tag_name("body").text
+    expected = f"Showing {officers_per_page + 1}-{officers_per_page * 2} of {total_officers}"
+    assert expected in page_text
 
 def test_find_officer_can_see_uii_question_for_depts_with_uiis(
     mockdata, browser, server_port
