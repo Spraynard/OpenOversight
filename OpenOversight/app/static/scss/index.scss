@@ -10,6 +10,7 @@ $navbar-default-toggle-icon-bar-bg: #333333;
 $navbar-default-toggle-hover-bg: #D3D3D3;
 
 @import "bootstrap";
+@import "paginate_nav";
 
 .navbar-link {
   color: $navbar-link-color;
